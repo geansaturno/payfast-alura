@@ -7,6 +7,11 @@ module.exports = app => {
         res.send('OK');
     });
 
+    app.post('/pagamento', (req, res) => {
+        res.send('dados recebidos');
+        console.log(req.body);
+    });
+
     return app;
 
 };
