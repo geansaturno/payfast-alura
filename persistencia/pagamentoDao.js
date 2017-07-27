@@ -6,37 +6,35 @@ module.exports = app => {
             this.connection = app.persistencia.connectionFactory();
         }
 
-        add(pagamento) {
+        promiseSqlFactory(...queryArgs){
             return new Promise((resolve, reject) => {
-                this.connection.query('INSERT INTO pagamentos SET ?', pagamento, (error, result)=> {
-                    if(error){
-                        reject(error);
+                this.connection.query(...queryArgs, (erro, result) => {
+                    if(erro){
+                        reject(erro);
                     }
                     resolve(result);
                 });
             });
         }
 
+        confirm(id){
+            return this.promiseSqlFactory('UPDATE pagamentos SET status = \"CONFIRMADO\" where id = ?', id);
+        }
+
+        cancel(id) {
+            return this.promiseSqlFactory('UPDATE pagamentos SET status = \"CANCELADO\" where id = ?', id);
+        }
+
+        add(pagamento) {
+            return this.promiseSqlFactory('INSERT INTO pagamentos SET ?', pagamento);
+        }
+
         list() {
-            return new Promise((resolve, reject) => {
-                this.connection.query('select * from pagamentos', (error, result) => {
-                    if(error){
-                        reject(error);
-                    }
-                    resovle(result);
-                });
-            });
+            return this.promiseSqlFactory('select * from pagamentos');
         }
 
         get(id) {
-            return new Promise((resolve, reject) => {
-                this.connection.query("select * from pagamentos where id = ?",[id], (error, result) => {
-                    if(error) {
-                        reject(error);
-                    }
-                    resovle(result);
-                });
-            });
+            return this.promiseSqlFactory("select * from pagamentos where id = ?",[id]);
         }
     }
 }

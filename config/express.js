@@ -2,15 +2,18 @@
 let express = require('express');
 let consign = require('consign');
 let bodyParser = require('body-parser');
+let expressValidator = require('express-validator');
 
 module.exports = () => {
     let app = express();
 
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({extended: true}));
+    app.use(expressValidator());
 
     consign()
-        .include('controller')
-        .then('persistencia')
+        .include('persistencia')
+        .then('validators')
+        .then('controller')
         .into(app);
 
     return app;

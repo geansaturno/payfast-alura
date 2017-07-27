@@ -4,7 +4,7 @@
   "description": "um gateway para pagamentos através de recursos http.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node index.js",
     "nodemon": "nodemon",
     "gulp": "gulp"
@@ -14,7 +14,10 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "mysql": "^2.13.0"
+    "express-validator": "^3.2.1",
+    "mocha": "^3.4.2",
+    "mysql": "^2.13.0",
+    "supertest": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^6.0.73",
