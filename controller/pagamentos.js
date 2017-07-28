@@ -15,7 +15,16 @@ module.exports = app => {
 
         pagamentoDao.cancel(id)
         .then(result => {
-            res.status(200).json({msg: "Pagamento Cancelado"});
+
+            let resData = {
+                data: {},
+                links: [
+                    app.helpers.hateoasLinkFactory('pagamento', 'Criar', 'POST')
+                ],
+                msg: 'Pagamento Cancelado'
+            }
+
+            res.status(200).json(resData);
         })
         .catch(erro => {
             console.log(erro);
@@ -33,8 +42,17 @@ module.exports = app => {
         .then(result => {
 
             pagamentoDao.get(id)
+
+            let resData = {
+                data: pagamento,
+                links: [
+                    app.helpers.hateoasLinkFactory('pagamento', 'Criar', 'POST')
+                ],
+                msg: 'Pagamento Confirmado'
+            }
+
             .then(pagamento => {
-                res.json(pagamento);
+                res.json(resData);
             });
 
         })
@@ -54,9 +72,21 @@ module.exports = app => {
 
         pagamentoDao.add(pagamento)
         .then(result => {
-            console.log("Pagamento criado", pagamento)
-            res.location(`pagamento/${result.insertId}` )
-            res.status(201).json(pagamento);
+            console.log("Pagamento criado", pagamento);
+            res.location(`pagamento/${result.insertId}`);
+
+            pagamento.id = result.insertId;
+
+            let resData = {
+                data: pagamento,
+                links: [
+                    app.helpers.hateoasLinkFactory(`pagamento/${pagamento.id}`, 'Confirmar', 'PUT'),
+                    app.helpers.hateoasLinkFactory(`pagamento/${pagamento.id}`, 'Cancelar', 'DELETE'),
+                ],
+                msg: "Pagamento criado"
+            }
+
+            res.status(201).json(resData);
         })
         .catch(error => {
             console.error("Ocorreu um erro ", error);

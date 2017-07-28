@@ -13,7 +13,7 @@ describe("#Add Pagamento", () => {
         .expect(201)
         .end((erro, res) => {
             pagamento.location = res.header.location;
-            done();
+            verifySuccessReturn(res, done);
         });
     })
 
@@ -49,7 +49,10 @@ describe("#Comfirm Pagamento", () => {
 
         supertest.put(`/${pagamento.location}`)
         .expect('Content-type', /json/)
-        .expect(200, done);
+        .expect(200)
+        .end((err, res)=> {
+            verifySuccessReturn(res, done);
+        });
     });
 
      it('#Comfirm pagamento com id incorreto', done => {
@@ -67,7 +70,10 @@ describe("#Cancelar pagamento", () => {
 
         supertest.delete(`/${pagamento.location}`)
         .expect('Content-type', /json/)
-        .expect(200, done);
+        .expect(200)
+        .end((err, res) => {
+            verifySuccessReturn(res, done);  
+        });
     });
 
      it('#Cancelar pagamento com id incorreto', done => {
@@ -83,5 +89,15 @@ describe("#Cancelar pagamento", () => {
 });
 
 function verifyValidationReturn(res, done){
-    Object.keys(res.body).every((campo) => res.body[campo].msg && res.body[campo].param) ? done() : done("Retorno da validação incorreto");
+    Object.keys(res.body)
+    .every((campo) => res.body[campo].msg && res.body[campo].param) 
+    ? done() : done("Retorno da validação incorreto");
+}
+
+function verifySuccessReturn(res, done){
+    if(!res.body.msg && res.body.links && res.body.data) {
+        done("Retorno de sucesso incorreto");
+    } else {
+        done();
+    }
 }

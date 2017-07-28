@@ -7,6 +7,9 @@ let expressValidator = require('express-validator');
 module.exports = () => {
     let app = express();
 
+    app.set('port', 3000);
+    app.set('host', 'localhost');
+
     app.use(bodyParser.json({extended: true}));
     app.use(expressValidator());
 
@@ -14,6 +17,7 @@ module.exports = () => {
         .include('persistencia')
         .then('validators')
         .then('controller')
+        .then('helpers')
         .into(app);
 
     return app;
