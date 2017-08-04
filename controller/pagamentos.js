@@ -63,14 +63,13 @@ module.exports = app => {
     });
 
     app.post('/pagamento', (req, res) => {
-        let pagamentoDao = new app.persistencia.pagamentoDao();
 
         let pagamento = req.body.pagamento;
 
         if (pagamento.forma_de_pagamento == 'cartao') {
             let cartao = req.body.cartao;
 
-            cardfastClient = new app.services.CardfastClient;
+            cardfastClient = new app.services.CardfastClient();
             cardfastClient.autoriza(cartao)
                 .then(() => {
                     registrarPagamento(pagamento, res)
@@ -84,33 +83,33 @@ module.exports = app => {
     });
 
     return app;
-};
+    function registrarPagamento(pagamento, res) {
 
-function registrarPagamento(pagamento, res) {
+        pagamento.status = "CRIADO";
+        pagamento.data = new Date();
 
-    pagamento.status = "CRIADO";
-    pagamento.data = new Date();
+        let pagamentoDao = new app.persistencia.pagamentoDao();
+        pagamentoDao.add(pagamento)
+            .then(result => {
+                console.log("Pagamento criado", pagamento);
+                res.location(`pagamento/${result.insertId}`);
 
-    pagamentoDao.add(pagamento)
-        .then(result => {
-            console.log("Pagamento criado", pagamento);
-            res.location(`pagamento/${result.insertId}`);
+                pagamento.id = result.insertId;
 
-            pagamento.id = result.insertId;
+                let resData = {
+                    data: pagamento,
+                    links: [
+                        app.helpers.hateoasLinkFactory(`pagamento/${pagamento.id}`, 'Confirmar', 'PUT'),
+                        app.helpers.hateoasLinkFactory(`pagamento/${pagamento.id}`, 'Cancelar', 'DELETE'),
+                    ],
+                    msg: "Pagamento criado"
+                }
 
-            let resData = {
-                data: pagamento,
-                links: [
-                    app.helpers.hateoasLinkFactory(`pagamento/${pagamento.id}`, 'Confirmar', 'PUT'),
-                    app.helpers.hateoasLinkFactory(`pagamento/${pagamento.id}`, 'Cancelar', 'DELETE'),
-                ],
-                msg: "Pagamento criado"
-            }
-
-            res.status(201).json(resData);
-        })
-        .catch(error => {
-            console.error("Ocorreu um erro ", error);
-            res.status(500).send(error);
-        });
+                res.status(201).json(resData);
+            })
+            .catch(error => {
+                console.error("Ocorreu um erro ", error);
+                res.status(500).send(error);
+            });
+    };
 };

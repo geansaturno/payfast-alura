@@ -15,6 +15,7 @@ module.exports = () => {
 
     consign()
         .include('persistencia')
+        .then('services')
         .then('validators')
         .then('controller')
         .then('helpers')

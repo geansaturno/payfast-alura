@@ -2,7 +2,7 @@ let restify = require('restify-clients');
 
 module.exports = (app) => {
 
-    class CardfastClient {
+    return class CardfastClient {
 
         constructor(){
 
@@ -11,10 +11,12 @@ module.exports = (app) => {
 
         autoriza(cartao){
 
-            return new Promise((reject, resolve) => {
+            console.log('pedindo autorizacao')
+
+            return new Promise((resolve, reject) => {
                 client.post(('/cartao/autoriza', cartao, (err, req, res, obj) => {
 
-                    console.log(obj);
+                    console.log('Obijeto do cartrao', obj);
 
                     if(err){
                         reject(err);

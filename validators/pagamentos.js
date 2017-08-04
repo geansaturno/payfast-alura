@@ -2,8 +2,8 @@ module.exports = app => {
 
     app.post('/pagamento', (req, res, next) => {
 
-        req.checkBody('forma_de_pagamento', "Forma de pagamento não pode ser vazia").notEmpty();
-        req.checkBody('valor', "Valor não existe ou está incorreto").notEmpty().isFloat();
+        req.checkBody('pagamento.forma_de_pagamento', "Forma de pagamento não pode ser vazia").notEmpty();
+        req.checkBody('pagamento.valor', "Valor não existe ou está incorreto").notEmpty().isFloat();
 
         let erros = req.getValidationResult()
         .then(erros => {
