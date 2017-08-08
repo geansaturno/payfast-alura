@@ -69,17 +69,22 @@ module.exports = app => {
         if (pagamento.forma_de_pagamento == 'cartao') {
             let cartao = req.body.cartao;
 
-            cardfastClient = new app.services.CardfastClient();
-            cardfastClient.autoriza(cartao)
-                .then(() => {
-                    registrarPagamento(pagamento, res)
-                })
-                .catch(err => {
-                    res.sendStatus(500);
-                });
+            if(cartao) {
+                cardfastClient = new app.services.CardfastClient();
+                cardfastClient.autoriza(cartao)
+                    .then(() => {
+                        registrarPagamento(pagamento, res)
+                    })
+                    .catch(err => {
+                        console.log('Erro na autorizacao', err);
+                        res.sendStatus(500);
+                    });
+            } else {
+                res.status(403).json({error: "Cartão não fornecido"});
+            }
+        } else {
+            registrarPagamento(pagamento, res)
         }
-
-        registrarPagamento(pagamento, res)
     });
 
     return app;
@@ -91,7 +96,7 @@ module.exports = app => {
         let pagamentoDao = new app.persistencia.pagamentoDao();
         pagamentoDao.add(pagamento)
             .then(result => {
-                console.log("Pagamento criado", pagamento);
+                // console.log("Pagamento criado", pagamento);
                 res.location(`pagamento/${result.insertId}`);
 
                 pagamento.id = result.insertId;

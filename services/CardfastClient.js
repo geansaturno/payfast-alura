@@ -11,10 +11,11 @@ module.exports = (app) => {
 
         autoriza(cartao){
 
-            console.log('pedindo autorizacao')
+            console.log('pedindo autorizacao');
+            console.log(cartao);
 
             return new Promise((resolve, reject) => {
-                client.post(('/cartao/autoriza', cartao, (err, req, res, obj) => {
+                this.client.post('/cartoes/autoriza', cartao, (err, req, res, obj) => {
 
                     console.log('Obijeto do cartrao', obj);
 
@@ -28,7 +29,7 @@ module.exports = (app) => {
                             resolve();
                         }
                     }
-                }));
+                });
             });
         }
     }

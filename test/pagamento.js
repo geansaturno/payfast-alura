@@ -2,6 +2,10 @@ let express = require('../config/express.js')();
 let supertest = require('supertest')(express);
 
 let pagamento = require('../files/pagamento.json');
+let pagamentoCartao = require('../files/pagamentoCartao.json');
+
+console.log('Pagamento dinheiro\n' ,pagamento, true);
+console.log('Pagamento cartão\n', pagamentoCartao);
 
 describe("#Add Pagamento", () => {
 
@@ -12,8 +16,12 @@ describe("#Add Pagamento", () => {
         .expect('Content-type', /json/)
         .expect(201)
         .end((erro, res) => {
-            pagamento.location = res.header.location;
-            verifySuccessReturn(res, done);
+            if(erro){
+                done(erro);
+            } else {
+                pagamento.location = res.header.location;
+                verifySuccessReturn(res, done);
+            }
         });
     })
 
