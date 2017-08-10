@@ -24,7 +24,7 @@ module.exports = app => {
 
     function errorParse(erros, res, next) {
         if(!erros.isEmpty()){
-            console.log('Erros de validação', erros.array());
+            // console.log('Erros de validação', erros.array());
             res.status(400).json(erros.mapped());
             return;
         }

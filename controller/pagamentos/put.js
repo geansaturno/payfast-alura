@@ -8,21 +8,17 @@ module.exports = app => {
 
         pagamentoDao.confirm(id)
             .then(result => {
-
                 pagamentoDao.get(id)
-
-                let resData = {
-                    data: pagamento,
-                    links: [
-                        app.helpers.hateoasLinkFactory('pagamento', 'Criar', 'POST')
-                    ],
-                    msg: 'Pagamento Confirmado'
-                }
-
                     .then(pagamento => {
+                        let resData = {
+                            data: pagamento,
+                            links: [
+                                app.helpers.hateoasLinkFactory('pagamento', 'Criar', 'POST')
+                            ],
+                            msg: 'Pagamento Confirmado'
+                        }
                         res.json(resData);
-                    });
-
+                    })
             })
             .catch(error => {
                 console.error("Ocorreu um erro ", error);
