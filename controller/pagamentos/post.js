@@ -15,8 +15,14 @@ module.exports = app => {
                         registrarPagamento(pagamento, res)
                     })
                     .catch(err => {
-                        console.log('Erro na autorizacao', err);
-                        res.sendStatus(500);
+                        let status = 500;
+                        
+                        if (err.status) {
+                            status = err.status
+                        }
+
+                        delete err.status;
+                        res.status(status).json(err);
                     });
             } else {
                 res.status(403).json({ error: "Cartão não fornecido" });

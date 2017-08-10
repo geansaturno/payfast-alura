@@ -5,26 +5,21 @@ module.exports = (app) => {
     return class CardfastClient {
 
         constructor(){
-
             this.client = restify.createJsonClient('http://localhost:3001');
         }
 
         autoriza(cartao){
 
-            console.log('pedindo autorizacao');
-            console.log(cartao);
-
             return new Promise((resolve, reject) => {
                 this.client.post('/cartoes/autoriza', cartao, (err, req, res, obj) => {
 
-                    console.log('Obijeto do cartrao', obj);
-
+                    let cartao = obj.dados_do_cartao;
                     if(err){
-                        reject(err);
+                        reject({cartao: {msg: "Erro na autorização do cartão", 'param': 'cartao'}, status : 400});
                     } else {
 
-                        if(obj.status != "AUTORIZADO"){
-                            reject({msg: obj.status});
+                        if(cartao.status != "AUTORIZADO"){
+                            reject({'msg': cartao.status});
                         } else {
                             resolve();
                         }
