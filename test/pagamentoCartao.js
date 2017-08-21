@@ -17,8 +17,13 @@ describe('Pagamento com Cartao', () => {
                     if (erro) {
                         done(erro);
                     } else {
+                        console.log(res.body);
+                        
                         pagamento.location = res.header.location;
-                        testhelpers.verifySuccessReturn(res, done);
+                        testhelpers.verifySuccessReturn(res);
+
+                        testhelpers.hasField(res.body.data, 'pagamento', "Não há o campo pagamento na resposta do servidor")
+                        testhelpers.hasField(res.body.data, 'cartao', "Não há o campo cartao na resposta do servidor", done)
                     }
                 });
         })
