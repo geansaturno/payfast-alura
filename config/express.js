@@ -21,5 +21,9 @@ module.exports = () => {
         .then('helpers')
         .into(app);
 
+    new app.services.CorreiosClient().then((correiosCli)=>{
+        console.log(correiosCli.toString());
+    })
+
     return app;
 };

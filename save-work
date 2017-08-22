@@ -1,5 +1,0 @@
-#!/bin/bash
-
-msg=$(date '+Work at %d/%b/%y - %H:%M')
-
-echo $msg

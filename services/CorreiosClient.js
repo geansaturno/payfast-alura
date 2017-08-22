@@ -3,13 +3,17 @@ let soap = require('soap');
 module.exports = () => {
     return class CorreioClient {
 
-        constructor(){
-            this.correioSoap = soap.createClientAsync(url);
-            return this.correioSoap;
+        constructor() {
+            this._url = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx?wsdl"
         }
 
-        CalcPrecoPrazo(cepOrigen, cepDestino){
-
+        calculaPrazo(){
+            return new Promise((resolve, reject) => {
+                soap.createClientAsync(this._url)
+                .then(correioClient => {
+                    this.correioClient = cli;
+                });
+            });
         }
     }
 }
