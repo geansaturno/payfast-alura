@@ -1,7 +1,7 @@
-let express = require('../config/express.js')();
+let express = require('../../config/express.js')();
 let supertest = require('supertest')(express);
-let testhelpers = require('./helpers');
-let pagamento = require('../files/pagamento.json');
+let testhelpers = new require('../helpers.js')();
+let pagamento = require('../../files/pagamento.json');
 
 console.log('Pagamento dinheiro\n', pagamento, true);
 
