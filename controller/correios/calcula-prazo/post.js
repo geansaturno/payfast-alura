@@ -2,12 +2,13 @@ module.exports = app => {
 
     let correiosClient = new app.services.CorreiosClient();
 
-    app.post((req, res) => {
+    app.post('/correios/calcula-prazo', (req, res) => {
 
         let origem = req.body.origem;
         let destino = req.body.destino;
 
-        correios.calcularPrazo(origem, destino)
+        correios = new app.services.CorreiosClient();
+        correios.calculaPrazo(origem, destino)
         .then(result => {
             res.json(result);
         })

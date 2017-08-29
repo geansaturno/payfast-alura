@@ -1,5 +1,4 @@
 {
-    "nCdServico": "40010",
-    "sCepOrigem": "05303030",
-    "sCepDestino": "65066635"
+    "origem": "05303030",
+    "destino": "65066635"
 }
