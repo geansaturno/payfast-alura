@@ -6,7 +6,7 @@ function createDbConnection(){
     let dbcofig = {
         host: "localhost",
         user: "root",
-        password: "mysql@uol",
+        password: "Cronos1248*",
         database: "payfast"
     }
 

@@ -1,6 +1,5 @@
 module.exports = app => {
-    var pagamentoDao = new app.persistencia.pagamentoDao();
-
+    
     app.post('/pagamento', (req, res) => {
 
         let pagamento = req.body.pagamento;
