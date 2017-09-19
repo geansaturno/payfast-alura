@@ -4,13 +4,13 @@ module.exports = app => {
         var pagamentoDao = new app.persistencia.pagamentoDao();
 
         pagamentoDao.get(req.params.id)
-            .then(result => {
-                console.log(result);
-                res.send(result);
-            })
-            .catch(error => {
-                console.log(error);
-                res.send(error);
-            })
+        .then(result => {
+            console.log(result);
+            res.send(result);
+        })
+        .catch(error => {
+            console.log(error);
+            res.send(error);
+        })
     });
 }
