@@ -1,5 +1,7 @@
 module.exports = app => {
     
+    let memcached = app.loaders.memcached;
+
     app.post('/pagamento', (req, res) => {
 
         let pagamento = req.body.pagamento;
@@ -12,6 +14,8 @@ module.exports = app => {
                 cardfastClient.autoriza(cartao)
                     .then(() => {
                         registrarPagamento(pagamento, res)
+
+                        memcached.set(`pagamento-${pagamento.id}`, pagamento);
                     })
                     .catch(err => {
                         let status = 500;

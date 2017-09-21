@@ -16,6 +16,7 @@
     "express": "^4.15.3",
     "express-validator": "^3.2.1",
     "memcache": "^0.3.0",
+    "memcached": "^2.2.2",
     "mocha": "^3.4.2",
     "mysql": "^2.13.0",
     "restify": "^5.0.1",
