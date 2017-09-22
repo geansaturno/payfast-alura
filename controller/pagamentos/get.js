@@ -3,14 +3,22 @@ module.exports = app => {
 
         var pagamentoDao = new app.persistencia.pagamentoDao();
 
-        pagamentoDao.get(req.params.id)
+        let memcached = app.loaders.memcached;
+
+        memcached.get(`pagamento-${req.params.id}`)
         .then(result => {
-            console.log(result);
-            res.send(result);
+            res.send(result);            
         })
-        .catch(error => {
-            console.log(error);
-            res.send(error);
+        .catch(()=> {
+            pagamentoDao.get(req.params.id)
+            .then(result => {
+                console.log(result);
+                res.send(result);
+            })
+            .catch(error => {
+                console.log(error);
+                res.send(error);
+            })
         })
     });
 }

@@ -1,7 +1,7 @@
 let memcached = require('memcached');
 
 module.exports = app => {
-    return new class MemCachedClient {
+    return class MemCachedClient {
 
         constructor() {
             this._memcached = new memcached('localhost:11211', {
@@ -18,7 +18,7 @@ module.exports = app => {
                         reject(err);
                         console.log('Erro no memcache', err);
                     }
-
+                    console.log(`Pagamento ${key} inserido`);
                     resolve();
                 });
             })

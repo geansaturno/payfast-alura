@@ -14,8 +14,6 @@ module.exports = app => {
                 cardfastClient.autoriza(cartao)
                     .then(() => {
                         registrarPagamento(pagamento, res)
-
-                        memcached.set(`pagamento-${pagamento.id}`, pagamento);
                     })
                     .catch(err => {
                         let status = 500;
@@ -57,6 +55,7 @@ module.exports = app => {
                     msg: "Pagamento criado"
                 }
 
+                memcached.set(`pagamento-${pagamento.id}`, pagamento);
                 res.status(201).json(resData);
             })
             .catch(error => {
