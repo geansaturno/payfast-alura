@@ -7,12 +7,13 @@ module.exports = app => {
 
         memcached.get(`pagamento-${req.params.id}`)
         .then(result => {
+            app.loaders.logger.info(`Get ${req.params.id} from cache`);
             res.send(result);            
         })
         .catch(()=> {
             pagamentoDao.get(req.params.id)
             .then(result => {
-                console.log(result);
+            app.loaders.logger.info(`Get ${req.params.id} from db`);
                 res.send(result);
             })
             .catch(error => {
