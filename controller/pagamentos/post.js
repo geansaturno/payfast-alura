@@ -5,7 +5,6 @@ module.exports = app => {
     app.post('/pagamento', (req, res) => {
 
         let pagamento = req.body.pagamento;
-
         if (pagamento.forma_de_pagamento == 'cartao') {
             let cartao = req.body.cartao;
 
@@ -34,14 +33,12 @@ module.exports = app => {
     });
 
     function registrarPagamento(pagamento, res) {
-
         pagamento.status = "CRIADO";
         pagamento.data = new Date();
 
         let pagamentoDao = new app.persistencia.pagamentoDao();
         pagamentoDao.add(pagamento)
             .then(result => {
-                // console.log("Pagamento criado", pagamento);
                 res.location(`pagamento/${result.insertId}`);
 
                 pagamento.id = result.insertId;
@@ -51,6 +48,7 @@ module.exports = app => {
                     links: [
                         app.helpers.hateoasLinkFactory(`pagamento/${pagamento.id}`, 'Confirmar', 'PUT'),
                         app.helpers.hateoasLinkFactory(`pagamento/${pagamento.id}`, 'Cancelar', 'DELETE'),
+                        app.helpers.hateoasLinkFactory(`pagamento/${pagamento.id}`, 'Consultar', 'GET'),
                     ],
                     msg: "Pagamento criado"
                 }

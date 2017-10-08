@@ -1,7 +1,17 @@
+let fs = require('fs');
+let winston = require('winston');
+
 module.exports = (app) => {
     return class WinstonClient {
-        constructor(){
-            let winston = require('winston');
+        constructor(path = 'logs/'){
+
+            if(!path.endsWith('/')) {
+                path += '/';
+            }
+
+            if(!fs.existsSync(path)) {
+                fs.mkdirSync(path)
+            }
 
             let logger = new winston.Logger({
                 transports: [

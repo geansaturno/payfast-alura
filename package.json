@@ -18,6 +18,7 @@
     "memcache": "^0.3.0",
     "memcached": "^2.2.2",
     "mocha": "^3.4.2",
+    "morgan": "^1.9.0",
     "mysql": "^2.13.0",
     "restify": "^5.0.1",
     "restify-client": "^1.0.5",
